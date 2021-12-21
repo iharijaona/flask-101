@@ -13,7 +13,14 @@ PRODUCTS = {
 def hello():
     return "<b>Hello World!</b>"
 
-
 @app.route('/api/v1/products')
-def get_products():
-    return jsonify(list(PRODUCTS))
+@app.route('/api/v1/products/<int:id>')
+def get_products(id=None):
+    if id is None:
+        return jsonify(list(PRODUCTS.values()))
+    else:
+        product =  PRODUCTS.get(id)
+        if product:
+            return jsonify(product)
+        else:
+            return jsonify({"message": "Product not found"}), 404
